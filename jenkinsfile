@@ -1,0 +1,19 @@
+pipeline {
+  agent any
+  stages {
+    stage ('Build') {
+      steps {
+        sh 'printenv'
+        sh 'docker build -t nirajan132/jenkinsdemo:""$BUILD_ID"" .'
+      }
+    }
+    
+     stage ('Publish to DockerHub') {
+      steps {
+        withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
+          sh 'docker push nirajan132/jenkinsdemo:""$BUILD_ID""'
+         }
+       }
+     }
+   }
+ } 
